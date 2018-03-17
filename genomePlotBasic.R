@@ -124,7 +124,7 @@ SVGFILE <- "chromosome.svg"  # Filename for the output we produce
 # PAGEHEIGHT <- (  8.5 - 2) * 2.54    # in cm
 
 PAGEWIDTH  <- (  8.5 - 2) * 2.54 
-PAGEHEIGHT <- ( 8.0 - 2) * 2.54
+PAGEHEIGHT <- ( 14.0 - 2) * 2.54
 RESOLUTION <- 150                  # pixels per 2.54 cm
 
 
@@ -159,8 +159,8 @@ myData <- read_tsv(DATAFILE)
 
 # Entity annotations: data for each gene
 myGenes <- data.frame(sym = myData$sym,            # Gene symbols
-                      start = myData$start+0.05*CHR20LENGTH,        # start
-                      end = myData$end+0.05*CHR20LENGTH,            # end
+                      start = myData$start-0.05*CHR20LENGTH,        # start
+                      end = myData$end-0.05*CHR20LENGTH,            # end
                       strand = myData$strand,      # strand
                       GOid = myData$GO_P,          # GO annotation for "Process"
                       stringsAsFactors = FALSE)
@@ -209,8 +209,8 @@ myShapes <- list()
 
 # CHR20FROM <- c(0.05, 0.0)
 # CHR20TO   <- c(1.05, 0.0)
-CHR20FROM <- c(0.5, 0.05)
-CHR20TO   <- c(0.5, 1.05)
+CHR20FROM <- c(0.5, -0.05)
+CHR20TO   <- c(0.5, 0.95)
 
 myShapes[[1]] <- list(type = "line",
                       p1 = CHR20FROM,
@@ -267,7 +267,7 @@ for (i in 1:nrow(myGenes)) {
   
   #thisCentre <- c(mean(c(myGenes$start[i], myGenes$end[i])) / CHR20LENGTH,  # x
   #             0.0 + (myGenes$strand[i] * thisHeight * 0.5) )                # y
-  thisCentre <- c(0.5 + (myGenes$strand[i] * thisWidth * 0.5),  # x
+  thisCentre <- c(0.5 + (-myGenes$strand[i] * thisWidth * 0.5),  # x
                 mean(c(myGenes$start[i], myGenes$end[i])) / CHR20LENGTH )           # y
 
   # We use the colour for GO anotations we defined above.

@@ -350,10 +350,9 @@ SVGdrawRect <- function(x, y, w, h, ang,
 
   crX <- x + (w / 2)
   crY <- y + (h / 2)
-
-  s <- paste( "<g transform=\"",
-              sprintf("rotate(%f, %f, %f)", ang, crX, crY),
-              "\">",
+  #transform=\"",
+  #sprintf("rotate(%f, %f, %f)", ang, crX, crY),\
+  s <- paste( "<g>",
               collapse = " ")
   s <- c(s, paste( sprintf("<rect x=\"%f\"", x),
                    sprintf("y=\"%f\"", y),

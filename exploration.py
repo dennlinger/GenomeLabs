@@ -145,7 +145,11 @@ if __name__ == "__main__":
     
     # write as file
     # JSON for the JS part
-    info.to_json(geneoutput, orient="index")
+    t = info.reset_index().to_json(orient='records')
+    t = '{"nodes":'+t+'}'
+    with open(geneoutput, "w") as f:
+        f.write(t)
+#    info.to_json(geneoutput, orient="index")
     # tsv for the horizontal svg
     info.to_csv(reducedoutput, sep=sep, index=False)
     
