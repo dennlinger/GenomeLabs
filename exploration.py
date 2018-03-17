@@ -75,9 +75,12 @@ def output_json(mapping,score):
     temp_list = []
     for el in mapping:
         # line layout: source (Gene), target (bodypart), score
-        temp_list.append([el[0], el[1], score[el]])
+        temp_list.append([el[0], el[1], str(score[el])])
         
-    json_string = json.dumps(temp_list)
+    json_string = '{ "links":['
+    for el in temp_list:
+        json_string += '{"source":"'+el[0]+'","target":"'+el[1]+'","value":"'+el[2]+'"},'
+    json_string = json_string[:-1] + ']}'
     
     with open(output, "w") as f:
         f.write(json_string)
