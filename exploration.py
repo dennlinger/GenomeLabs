@@ -19,6 +19,7 @@ gofile = "Chr20GOslimData.tsv"
 
 output = "edges.json"
 geneoutput = "geneinfo.json"
+reducedoutput = "Chr20Reduced.tsv"
 sep = "\t"
 
 # manually defined dictionary of classification mappings
@@ -140,4 +141,9 @@ if __name__ == "__main__":
     info = info[boolean]
     
     # write as file
+    # JSON for the JS part
     info.to_json(geneoutput, orient="index")
+    # tsv for the horizontal svg
+    info.to_csv(reducedoutput, sep=sep, index=False)
+    
+    

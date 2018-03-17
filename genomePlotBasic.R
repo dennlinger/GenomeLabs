@@ -111,6 +111,7 @@ DATAFILE <- "Chr20GeneData.tsv"  # Chromosome data input. See README-DATA and
                                  # prepareGenomeData.R for a description of the
                                  # contents, and the code that produces it from
                                  # database sources.
+DATAFILE <- "Chr20Reduced.tsv" # alternative file with reduced number of lines
 
 NACOLOUR <- "#AAAAAA"            # Neutral grey for NA attributes
 
@@ -119,8 +120,11 @@ SVGFILE <- "chromosome.svg"  # Filename for the output we produce
 # UTPoster prints from 24" x 36" all the way to 60" x 300".
 # Let's assume legal paper size for this demo, landscape orientation, and
 # subtract a 1" margin on both sides.
-PAGEWIDTH  <- ( 14.0 - 2) * 2.54    # in cm
-PAGEHEIGHT <- (  8.5 - 2) * 2.54    # in cm
+# PAGEWIDTH  <- ( 14.0 - 2) * 2.54    # in cm
+# PAGEHEIGHT <- (  8.5 - 2) * 2.54    # in cm
+
+PAGEWIDTH  <- (  8.5 - 2) * 2.54 
+PAGEHEIGHT <- ( 14.0 - 2) * 2.54
 RESOLUTION <- 150                  # pixels per 2.54 cm
 
 
@@ -155,8 +159,8 @@ myData <- read_tsv(DATAFILE)
 
 # Entity annotations: data for each gene
 myGenes <- data.frame(sym = myData$sym,            # Gene symbols
-                      start = myData$start,        # start
-                      end = myData$end,            # end
+                      start = myData$start+0.05*CHR20LENGTH,        # start
+                      end = myData$end+0.05*CHR20LENGTH,            # end
                       strand = myData$strand,      # strand
                       GOid = myData$GO_P,          # GO annotation for "Process"
                       stringsAsFactors = FALSE)
@@ -203,8 +207,10 @@ myShapes <- list()
 
 # Chromosome backbone:
 
-CHR20FROM <- c(0.0, 0.0)
-CHR20TO   <- c(1.0, 0.0)
+# CHR20FROM <- c(0.05, 0.0)
+# CHR20TO   <- c(1.05, 0.0)
+CHR20FROM <- c(0.5, 0.05)
+CHR20TO   <- c(0.5, 1.05)
 
 myShapes[[1]] <- list(type = "line",
                       p1 = CHR20FROM,
@@ -214,8 +220,8 @@ myShapes[[1]] <- list(type = "line",
 
 # Next we add some descriptive text:
 
-myShapes[[2]] <- list(type = "text",
-                      text = "CHR 20",
+myShapes[[1]] <- list(type = "text",
+                      text = "",
                       centre = c(0.1, 0.1),
                       size = 48,           # points
                       font = "Times",
@@ -253,11 +259,16 @@ for (i in 1:nrow(myGenes)) {
 
   # The centre of the rectangle is placed above or below the line, depending
   # on the strand. Calculate height first:
-  thisHeight <- 0.01 * (CHR20TO[1] - CHR20FROM[1])   # 1% of chromosome length
+  # thisHeight <- 0.02 * (CHR20TO[1] - CHR20FROM[1])   # 1% of chromosome length
+  thisWidth <- 0.02 * (CHR20TO[2] - CHR20FROM[2])
 
-  thisCentre <- c(mean(c(myGenes$start[i], myGenes$end[i])) / CHR20LENGTH,  # x
-              0.0 + (myGenes$strand[i] * thisHeight * 0.5) )                # y
-  thisWidth <- abs(myGenes$start[i] - myGenes$end[i]) / CHR20LENGTH
+  thisHeight <- abs(myGenes$start[i] - myGenes$end[i]) / CHR20LENGTH
+  #thisHeight <- abs(myGenes$start[i] - myGenes$end[i]) / CHR20LENGTH
+  
+  #thisCentre <- c(mean(c(myGenes$start[i], myGenes$end[i])) / CHR20LENGTH,  # x
+  #             0.0 + (myGenes$strand[i] * thisHeight * 0.5) )                # y
+  thisCentre <- c(0.5 + (myGenes$strand[i] * thisWidth * 0.5),  # x
+                mean(c(myGenes$start[i], myGenes$end[i])) / CHR20LENGTH )           # y
 
   # We use the colour for GO anotations we defined above.
   myFill <- myGOcolours[myGenes$GOid[i]]
@@ -281,6 +292,12 @@ for (i in 1:nrow(myGenes)) {
                                            sw = 0.5)  # points
 }
 
+# add the final strand again, since we want that on top
+myShapes[[length(myShapes) + 1]] <- list(type = "line",
+                      p1 = CHR20FROM,
+                      p2 = CHR20TO,
+                      stroke = "#4499AA",  # colour of line
+                      sw = 7.0)            # stroke-width
 # Done. All shapes are defined.
 
 
@@ -295,8 +312,8 @@ for (i in 1:nrow(myGenes)) {
 
 
 # range of coordinates:
-dX <- (CHR20TO[1] - CHR20FROM[1]) * 1.1
-
+#dX <- (CHR20TO[1] - CHR20FROM[1]) * 1.1
+dX <- (CHR20TO[2] - CHR20FROM[2]) * 1.1
 # Given the range that needs to fit on the page, we can compute the scale:
 
 sXY <- RESOLUTION * (PAGEWIDTH / 2.54) / dX
@@ -309,7 +326,7 @@ Ypx <- RESOLUTION * (PAGEHEIGHT / 2.54)
 # And we compute a translation: for this demo, we move the chromosome
 # to the middle of the page, and 1% to the right:
 
-tXY <- c(0.01 * (CHR20TO[1] - CHR20FROM[1]),
+tXY <- c(0.01 * (CHR20TO[2] - CHR20FROM[2]),
          Ypx / 2)
 
 
