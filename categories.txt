@@ -7,37 +7,31 @@ Maybe also connect to relatives.
 
 classes:
 
+DISEASE
+physical = asthma / arthritis / diabetes / narcolepsy / cancer (breast) / leukemia
+
+mental = depression (?) / anger / schizophrenia / bipolar / attention / Loneliness 
+
+head = face / facial / brain / intelligence/ well being / memory / hair
 
 heart
-blood
 
-lung / pulmonary
+blood = blood / artery
 
-hair
+lung = lung / pulmonary / breast (?)
 
-breast
+waist / obesity / bmi / body mass index
 
-waist
-
-bmi
-
-cancer / leukemia
-
-liver
+liver/kidney
 
 height
 
-smoke / smoking (smok)
+smoke / smoking (smok) -> maybe to lungs
 
-levels / level
+# levels / level
 
-face / facial
 
-DISEASE
-asthma / arthritis / diabetes / narcolepsy / obesity
 
-depression (?) / anger / schizophrenia / bipolar / attention
+ 
 
-Loneliness / well being
 
-intelligence
