@@ -1,0 +1,110 @@
+Dataset format and semantics
+============================
+The following datasets are provided:
+
+ - Chr20GeneData.tsv    annotations for all recognized genes on Chr 20
+
+ - Chr20GOslimData.tsv  definitions of GO terms in the GOslim subset
+                        that are annotated to Chr 20 genes. The GOslim sub-
+                        set is a reduced list of general GO terms that is often
+                        used for a broad classification of gene function.
+
+ - Chr20GWAStraits.tsv  Traits that have been annotated to regions spanned
+                        by recognized genes on Chr 20, which were discovered
+                        by GWAS (Genome Wide Association Studies).
+
+ - Chr20FuncIntx.tsv    The functional interaction network as defined by the
+                        STRING database containing all high-confidence
+                        edges in which both nodes are Chr 20 genes.
+
+
+Details
+=======
+
+Chr20GeneData.tsv  tab-separated values: 521 rows, 22 columns
+=================
+
+  sym (chr)           HGNC gene symbol: "AAR2", "ABHD12", "ABHD16B" ...
+  name (chr)          Gene name: "AAR2 splicing factor homolog" ...
+  type (chr)          Gene type: always "protein" in this set of genes
+  EnsemblID (chr)     Ensembl Gene ID: "ENSG00000131043", "ENSG00000100997" ...
+  EntrezGeneID (int)  Entrez (NCBI) gene ID: 25980  26090 140701  10005 ...
+  OMIMID (int)        OMIM genetic disease database ID: 617365, 613599, NA, ...
+  RefSeqID (chr)      RefSeq mRNA ID (NCBI): "NM_001271874", "NM_001042472" ...
+  UniProtID (chr)     UniProt protein database ID (EBI): "Q9Y312", "Q8N2K0" ...
+  UCSCID (chr)        UCSC genome database ID: "uc002xfc.4", "uc002wus.3" ...
+  start (int)         Start coordinate on Chr 20: 36236459, 25294743, ...
+  end (num)           End coordinate on Chr 20: 36270918, 25390983, ...
+  strand (int)        Strand: (+) is transcribed forward, (-) backward: 1 | -1
+  GO_C (chr)          GO ID (1), Cellular Component ontology: "GO:0032991" ...
+  GO_F (chr)          GO ID (1), Molecular Function ontology: "GO:0003674" ...
+  GO_P (chr)          GO ID (1), Biological Process ontology: "GO:0022618" ...
+  HPAclass (chr)      Human Protein Atlas (HPA) class: Description of category
+  HPAlocation (chr)   HPA Subcellular location: "Cytosol", "Nucleoplasm" ...
+  HPAprognostic (chr) HPA prognostic value: "Lung cancer:8.33e-5 (favourable)" ...
+  HPAcancerCat (chr)  HPA cancer expression type (2)
+  HPAtissueCat (chr)  HPA tissue expression type (2)
+  HPAspecificExpr (chr)  HPA tissue specific expression (3): "testis: 22.1" ...
+  HPAnonSpecificExpr (chr) HPA non-specific expression (4): "testis: 5.7" ...
+
+(1) Only the single, most informative GO term ID is listed here for each gene.
+    For a complete annotation, see Chr20GOslimData.tsv
+
+(2) HPA expression categories can take the values: "Expressed in all" |
+       "Not detected" | "Mixed" | "Tissue enhanced" | "Tissue enriched" |
+       "Group enriched"
+
+(3) Annoted for tissues in which the expression is significantly different from
+    general expression levels. Numbers are in TPM (transcripts per million).
+
+(4) For comparison, the maximum expression level in tissue in which the
+    protein is NOT specifically expressed is given (TPM).
+
+
+
+
+Chr20GOslimData.tsv  tab-separated values: 149 rows, 5 columns
+===================
+
+  ID (chr)         GO ID: "GO:0000003", "GO:0000228", "GO:0000229" ...
+  name (chr)       Name of the term: "reproduction", "nuclear chromosome" ...
+  namespace (chr)  GO ontology: "C" | "F" | "P"
+  def (chr)        Term definition: "The production of new individuals that..."
+  counts (int)     Number of human genes annotated to this term or its
+                   descendants in the full GO ontology (1): 10, 56, 1, 105, ...
+
+(1)  This number can be used to calculate the information of terms; for details
+       see the (extensive) code in prepareGenomeData.R
+
+
+
+
+Chr20GWAStraits.tsv  tab-separated values: 1,739 rows, 2 columns (1)
+===================
+
+  sym (chr)         HGNC gene symbol: "AAR2", "ABHD12", "ABHD12", "ABHD16B"...
+  trait (chr)       Description of the trait:
+                       "-"
+                       "Liver enzyme levels (alkaline phosphatase)"
+                       "Systemic lupus erythematosus"
+                       "Cognitive performance"
+                       "Liver fibrosis in pediatric non-alcoholic ..."
+                       ...
+
+
+(1) This data is kept separate from the main gene annotation data because there
+    can be multiple traits annotated to a single gene.
+
+
+
+Chr20FuncIntx.tsv  tab-separated values: 282 rows, 3 columns
+=================
+
+  This data defines an undirected, weighted graph given as edges between
+  nodes a and b, with a score of round(1000 * p_interaction) [900, 999]:
+
+  a (chr)      HGNC gene symbol:  "RALGAPA2", "ESF1",  "ESF1",  "AURKA", ...
+  b (chr)      HGNC gene symbol:  "RALGAPB",  "DDX27", "NOP56", "NINL", ...
+  score (int)  1000 * probability: 948,       959,     940,     919, ...
+
+# [END]
