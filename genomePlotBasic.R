@@ -124,7 +124,7 @@ SVGFILE <- "chromosome.svg"  # Filename for the output we produce
 # PAGEHEIGHT <- (  8.5 - 2) * 2.54    # in cm
 
 PAGEWIDTH  <- (  8.5 - 2) * 2.54 
-PAGEHEIGHT <- ( 14.0 - 2) * 2.54
+PAGEHEIGHT <- ( 8.0 - 2) * 2.54
 RESOLUTION <- 150                  # pixels per 2.54 cm
 
 
