@@ -83,6 +83,7 @@ if __name__ == "__main__":
     trait_list = trait_list[1:]
     
     # create empty sets and dictionaries
+    # We're using sets, since it automatically cancels the problem of duplicate edges.
     mapping = set()
     score = {}
     
@@ -100,20 +101,11 @@ if __name__ == "__main__":
                 mapping.add(tup)
                 
     # create output file
-    
-    # need to remove tuples for JSON parsing.
-#    json_string = "edges = {"
-#    for el in mapping:
-#        json_string += "['" + el[0] + "','" + el[1] + "','" + str(score[el]) + "'],"
-#    # remove last comma to avoid parsing conflict, and conclude object
-#    json_string = json_string[:-1]+ "}"
-#            
-#    with open(output, "w") as f:
-#        f.write(json_string)
-    
+
     # combine to list, so we can put it to JSON
     temp_list = []
     for el in mapping:
+        # line layout: source (Gene), target (bodypart), score
         temp_list.append([el[0], el[1], score[el]])
         
     json_string = json.dumps(temp_list)
