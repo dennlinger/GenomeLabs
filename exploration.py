@@ -14,7 +14,11 @@ import json
     
 # parameters and data
 filename = "Chr20GWAStraits.tsv"
+infofile = "Chr20GeneData.tsv"
+gofile = "Chr20GOslimData.tsv"
+
 output = "edges.json"
+geneoutput = "geneinfo.json"
 sep = "\t"
 
 # manually defined dictionary of classification mappings
@@ -63,12 +67,22 @@ class_dict = {"asthma":"physical",
               
               }
 
+def output_json(mapping,score):
+    """ Creates a JSON outut file"""
+    
+    # combine to list, so we can put it to JSON
+    temp_list = []
+    for el in mapping:
+        # line layout: source (Gene), target (bodypart), score
+        temp_list.append([el[0], el[1], score[el]])
+        
+    json_string = json.dumps(temp_list)
+    
+    with open(output, "w") as f:
+        f.write(json_string)
+
 if __name__ == "__main__":
     os.chdir(".")
-#    interactions = pd.read_csv("Chr20FuncIntx.tsv", sep="\t")
-    
-#    traits = pd.read_csv("Chr20GWAStraits.tsv", sep="\t")
-
     
     # Manually read in file. Split at specified separator, clean any line breaks, and force lowercase
     trait_list = []
@@ -101,17 +115,29 @@ if __name__ == "__main__":
                 mapping.add(tup)
                 
     # create output file
+    output_json(mapping, score)
+    
+    
+    # utilize pandas dataframes for second part, where we prepare the Gene information.
+    info = pd.read_csv(infofile, sep=sep)
+    go = pd.read_csv(gofile, sep=sep)
+    # avoid conflict for later join
+#    go.rename(index=str, columns={"ID":"go_ID", "name":"go_name", "namespace":"go_namespace", "def":"go_def", "counts": "go_counts"})
+    
+#    info.join(go, on="GO_C", rsuffix="_go_c")
 
-    # combine to list, so we can put it to JSON
-    temp_list = []
+    # create list of genes that appear:
+    genes = set()
     for el in mapping:
-        # line layout: source (Gene), target (bodypart), score
-        temp_list.append([el[0], el[1], score[el]])
+        genes.add(el[0])
         
-    json_string = json.dumps(temp_list)
+    # create manual truth vector for values that are in array
+    boolean = [False] * info.shape[0]
+    for i in range(info.shape[0]):
+        if (info.iloc[i,0] in genes):
+            boolean[i] = True
+            
+    info = info[boolean]
     
-    with open(output, "w") as f:
-        f.write(json_string)
-    
-
-
+    # write as file
+    info.to_json(geneoutput, orient="index")
