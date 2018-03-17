@@ -104,7 +104,7 @@ DATAFILE <- "Chr20GeneData.tsv"  # Chromosome data input. See README-DATA and
 
 NACOLOUR <- "#AAAAAA"            # Neutral grey for NA attributes
 
-SVGFILE <- "test.svg"  # Filename for the output we produce
+SVGFILE <- "interactions.svg"  # Filename for the output we produce
 
 # UTPoster prints from 24" x 36" all the way to 60" x 300".
 # Let's assume letter size for this demo, and subtract a 1" margin on both
@@ -119,7 +119,7 @@ RESOLUTION <- 150                  # pixels per 2.54 cm
 #
 # All required packages and functions are loaded from the source file below.
 # You can inspect/copy/modify the source code there.
-
+setwd("/home/dennis/BioHacks/2018-Challenge/")
 source("genomePlotFunctions.R")
 
 

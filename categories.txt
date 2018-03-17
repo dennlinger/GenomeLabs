@@ -1,0 +1,43 @@
+impact of genes on body!!!!!
+
+Third column is then the genome
+
+Maybe also connect to relatives.
+
+
+classes:
+
+
+heart
+blood
+
+lung / pulmonary
+
+hair
+
+breast
+
+waist
+
+bmi
+
+cancer / leukemia
+
+liver
+
+height
+
+smoke / smoking (smok)
+
+levels / level
+
+face / facial
+
+DISEASE
+asthma / arthritis / diabetes / narcolepsy / obesity
+
+depression (?) / anger / schizophrenia / bipolar / attention
+
+Loneliness / well being
+
+intelligence
