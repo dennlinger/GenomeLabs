@@ -125,10 +125,6 @@ if __name__ == "__main__":
     # utilize pandas dataframes for second part, where we prepare the Gene information.
     info = pd.read_csv(infofile, sep=sep)
     go = pd.read_csv(gofile, sep=sep)
-    # avoid conflict for later join
-#    go.rename(index=str, columns={"ID":"go_ID", "name":"go_name", "namespace":"go_namespace", "def":"go_def", "counts": "go_counts"})
-    
-#    info.join(go, on="GO_C", rsuffix="_go_c")
 
     # create list of genes that appear:
     genes = set()
@@ -141,6 +137,7 @@ if __name__ == "__main__":
         if (info.iloc[i,0] in genes):
             boolean[i] = True
             
+    # subselection of values that are relevant to visualization
     info = info[boolean]
     
     # write as file
