@@ -101,6 +101,8 @@ d3.json("data.json", function(error, graph) {
       .attr("class", "link")
       .attr("d", path)
       .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+      .style("stroke", function(d) { 
+		  return d.color = color(d.target.name.replace(/ .*/, "")); })
       .sort(function(a, b) { return b.dy - a.dy; });
  
 // add the link titles
