@@ -119,8 +119,7 @@ d3.json("data.json", function(error, graph) {
     .call(d3.behavior.drag()
       .origin(function(d) { return d; })
       .on("dragstart", function() { 
-		  this.parentNode.appendChild(this); })
-      .on("drag", dragmove));
+		  this.parentNode.appendChild(this); }));
  
 // add the rectangles for the nodes
   node.append("rect")
