@@ -51,7 +51,7 @@ var units = "connections";
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = screen.width - 500 - margin.left - margin.right,
     height = screen.height  - margin.top - margin.bottom;
- 
+
 var formatNumber = d3.format(",.0f"),    // zero decimal places
     format = function(d) { return formatNumber(d) + " " + units; },
     color = d3.scale.category20();
@@ -133,7 +133,7 @@ d3.json("data.json", function(error, graph) {
     .enter().append("g")
       .attr("class", "node")
       .attr("id", function(d) {return d.name;})
-      .style("opacity", function(d) { if(targets.includes(d.name)) {return 1;} else {return 1;}})
+      .style("opacity", function(d) { if(targets.includes(d.name)) {return 0.1;} else {return 1;}})
       .attr("transform", function(d) { 
 		  return "translate(" + d.x + "," + d.y + ")"; })
     .on('mouseover', function(d) {
@@ -156,8 +156,9 @@ d3.json("data.json", function(error, graph) {
  
 // add the rectangles for the nodes
   node.append("rect")
-      .attr("height", function(d) { return d.dy; })
-      .attr("width", sankey.nodeWidth())
+      .attr("height", function(d) { if(targets.includes(d.name)) {return 50;} else { return d.dy;}})
+      .attr("width", function(d) {if(targets.includes(d.name)) {return 50;}
+        else {return sankey.nodeWidth();}})
       .style("fill", function(d) { 
 		  return d.color = color(d.name.replace(/ .*/, "")); })
       .style("stroke", function(d) { 
@@ -194,7 +195,6 @@ d3.json("data.json", function(error, graph) {
 function reposition(id, indx, x, y) {
   var head = document.getElementById(id);
   var d = sankey.nodes()[indx]
-  console.log(head)
   d3.select(head).attr("transform", 
         "translate(" + (
              d.x = x
@@ -221,16 +221,15 @@ window.load = function() {
 }
 
 window.onload = function() {
-  reposition("physical", 0, 1280, 440);
-  reposition("mental", 1, 1005, 255);
-  reposition("head", 2, 1125, 245);
-  reposition("heart", 3, 1150, 350);
-  reposition("blood", 4, 1280, 300);
-  reposition("lung", 5, 1120, 405);
-  reposition("breast", 6, 1080, 330);
-  reposition("waist", 7, 1120, 500);
-  reposition("liver", 8, 1140, 460);
-  reposition("height", 9, 1090, 600)
+  reposition("mental", 1, 990*xscale, 240*yscale);
+  reposition("head", 2, 1097*xscale, 245*yscale);
+  reposition("heart", 3, 1140*xscale, 340*yscale);
+  reposition("blood", 4, 1250*xscale, 300*yscale);
+  reposition("lung", 5, 1100*xscale, 400*yscale);
+  reposition("breast", 6, 1060*xscale, 330*yscale);
+  reposition("waist", 7, 1100*xscale, 480*yscale);
+  reposition("liver", 8, 1130*xscale, 450*yscale);
+  reposition("height", 9, 1075*xscale, 600*yscale)
 };
 
 
