@@ -3,10 +3,10 @@
 <title>Gene Body Atlas</title>
 <style>
 #wrapper {
-  display: flex;
+  display:flex;
 }
 #chart {
-  flex: 1;
+  width:1420px;
 }
 #description {
   width: 500px;
@@ -49,8 +49,9 @@ var targets = ["physical", "mental", "head", "heart", "blood", "lung", "breast",
 var units = "connections";
  
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
-    width = screen.width - 500 - margin.left - margin.right,
-    height = screen.height  - margin.top - margin.bottom;
+    width = 1420,//1420 - 500 - margin.left - margin.right,
+    height = 1084; //  - margin.top - margin.bottom;
+// Determined via "experimental values". "Data-driven"
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
     format = function(d) { return formatNumber(d) + " " + units; },
