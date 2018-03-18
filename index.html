@@ -90,7 +90,7 @@ var svg = d3.select("#chart").append("svg")
 var imgs = svg.selectAll("image").data([0]);
 imgs.enter()
 .append("svg:image")
-.attr("xlink:href", "../body.svg")
+.attr("xlink:href", "data/body.svg")
 .attr("x", width/1.43)
 .attr("y", height/5.4)
 .attr("width", "400")
@@ -103,7 +103,7 @@ var sankey = d3.sankey()
     .size([width, height]);
  
 var path = sankey.link();
- 
+
 // load the data
 d3.json("data.json", function(error, graph) {
   if (error) {
@@ -194,14 +194,14 @@ var link = svg.append("g").selectAll(".link")
           if (x.target.name == node.name) {
             otherNode = nodeMap[x.source.name];
             var listElement = document.createElement("li");
-            listElement.innerText = otherNode.name_1 + ": " + otherNode.HPAclass + "\n";
+
+            listElement.innerText = otherNode.name + ", " + otherNode.name_1 + ": " + otherNode.HPAclass + "\n";
             ul.appendChild(listElement);
           }
         });
       }
       
       div.appendChild(ul);
-      console.log("clicked");
     })
     .style("fill", function(d) { 
     return d.color = color(d.name.replace(/ .*/, "")); })
