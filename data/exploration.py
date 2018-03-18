@@ -156,14 +156,7 @@ if __name__ == "__main__":
     # tsv for the horizontal svg
     info.to_csv(reducedoutput, sep=sep, index=False)
     
-    #  traits = pd.read_csv(traitfile, sep=sep)
-    # parse the traits to JSON
-#    trait_json = '{' #'{"traits":['
-#    for trait in trait_list:
-#        if trait[0] in genes:
-#            # trait_json += '{"name":'+trait[0]+'","desc":"'+trait[1] +'" },'
-#            trait_json += '"'+trait[0]+'":"'+trait[1]+'",'
-#    trait_json = trait_json[:-1] + '}'
+    # parse traits into a json format.
     final = {}
     for el in genes:
         final[el] = []
