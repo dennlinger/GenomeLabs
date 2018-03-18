@@ -156,11 +156,12 @@ if __name__ == "__main__":
     
     #  traits = pd.read_csv(traitfile, sep=sep)
     # parse the traits to JSON
-    trait_json = '{"traits":['
+    trait_json = '{' #'{"traits":['
     for trait in trait_list:
         if trait[0] in genes:
-            trait_json += '{"name":'+trait[0]+'","desc":"'+trait[1] +'" },'
-    trait_json = trait_json[:-1] + ']}'
+            # trait_json += '{"name":'+trait[0]+'","desc":"'+trait[1] +'" },'
+            trait_json += '"'+trait[0]+'":"'+trait[1]+'",'
+    trait_json = trait_json[:-1] + '}'
     
     with open(traitoutput, "w") as f:
         f.write(trait_json)
