@@ -119,7 +119,7 @@ d3.json("data.json", function(error, graph) {
     .enter().append("g")
       .attr("class", "node")
       .attr("id", function(d) {return d.name;})
-      .style("opacity", function(d) { if(targets.includes(d.name)) {return 1;} else {return 1;}})
+      .style("opacity", function(d) { if(targets.includes(d.name)) {return 0.1;} else {return 1;}})
       .attr("transform", function(d) { 
 		  return "translate(" + d.x + "," + d.y + ")"; })
     .on('mouseover', function(d) {
@@ -142,8 +142,9 @@ d3.json("data.json", function(error, graph) {
  
 // add the rectangles for the nodes
   node.append("rect")
-      .attr("height", function(d) { return d.dy; })
-      .attr("width", sankey.nodeWidth())
+      .attr("height", function(d) { if(targets.includes(d.name)) {return 50;} else { return d.dy;}})
+      .attr("width", function(d) {if(targets.includes(d.name)) {return 50;}
+        else {return sankey.nodeWidth();}})
       .style("fill", function(d) { 
 		  return d.color = color(d.name.replace(/ .*/, "")); })
       .style("stroke", function(d) { 
@@ -180,7 +181,6 @@ d3.json("data.json", function(error, graph) {
 function reposition(id, indx, x, y) {
   var head = document.getElementById(id);
   var d = sankey.nodes()[indx]
-  console.log(head)
   d3.select(head).attr("transform", 
         "translate(" + (
              d.x = x
@@ -207,16 +207,16 @@ window.load = function() {
 }
 
 window.onload = function() {
-  reposition("physical", 0, 1280, 440);
-  reposition("mental", 1, 1005, 255);
-  reposition("head", 2, 1125, 245);
-  reposition("heart", 3, 1150, 350);
-  reposition("blood", 4, 1280, 300);
-  reposition("lung", 5, 1120, 405);
-  reposition("breast", 6, 1080, 330);
-  reposition("waist", 7, 1120, 500);
-  reposition("liver", 8, 1140, 460);
-  reposition("height", 9, 1090, 600)
+  reposition("physical", 0, 1260, 430);
+  reposition("mental", 1, 990, 240);
+  reposition("head", 2, 1097, 245);
+  reposition("heart", 3, 1140, 340);
+  reposition("blood", 4, 1250, 300);
+  reposition("lung", 5, 1100, 400);
+  reposition("breast", 6, 1060, 330);
+  reposition("waist", 7, 1100, 480);
+  reposition("liver", 8, 1130, 450);
+  reposition("height", 9, 1075, 600)
 };
 
 
