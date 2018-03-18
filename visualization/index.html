@@ -123,16 +123,16 @@ d3.json("data.json", function(error, graph) {
       .attr("transform", function(d) { 
 		  return "translate(" + d.x + "," + d.y + ")"; })
     .on('mouseover', function(d) {
-      var nodeSelection= d3.select(this).style({opacity:'0.5'});
+      //var nodeSelection= d3.select(this).style({opacity:'0.5'});
       var linkSelection = d3.select(this)
-      nodeSelection.select("text").style({opacity:'1.0'});
+      //nodeSelection.select("text").style({opacity:'1.0'});
       //console.log(d.color);
       //colorLink(d.name, LightenDarkenColor(d.color, -40));
       colorLink(d.name, d3.rgb(d.color).darker(7));
     })
     .on('mouseout', function(d){
-      var nodeSelection = d3.select(this).style({opacity:'1.0'});
-      d3.select("text").style({opacity:'0.5'});
+      //var nodeSelection = d3.select(this).style({opacity:'1.0'});
+      //d3.select("text").style({opacity:'0.5'});
       colorLink(d.name, d.color);
     })
     .call(d3.behavior.drag()
@@ -191,7 +191,6 @@ function reposition(id, indx, x, y) {
     svg.selectAll(".link").attr("d",path)
 }
 
-<<<<<<< HEAD
 function colorLink(target, color){
   //iterate through all the links for src and target.
   var link = d3.selectAll(".link")[0].filter(function(d){
@@ -206,7 +205,7 @@ function colorLink(target, color){
 window.load = function() {
   reposition(0, "head", 100, 50);
 }
-=======
+
 window.onload = function() {
   reposition("physical", 0, 1280, 440);
   reposition("mental", 1, 1005, 255);
@@ -219,7 +218,7 @@ window.onload = function() {
   reposition("liver", 8, 1140, 460);
   reposition("height", 9, 1090, 600)
 };
->>>>>>> 8c5016587e68024a61ffd144df44086210d900ac
+
 
 // unused color hack from stackoverflow
 function LightenDarkenColor(col, amt) {
