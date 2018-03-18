@@ -108,12 +108,14 @@ if __name__ == "__main__":
     mapping = set()
     score = {}
     
+    clean_list = []
+    
     # go over all the examples we have and find whether keywords appear
     for key in class_dict.keys():
         for j, el in enumerate(trait_list):
             if key in el[1]:
                 tup = (el[0], class_dict[key])
-                
+                clean_list.append(el)
                 # add an intensity score, which is linearly increased
                 if (tup in mapping):
                     score[tup] += 1
@@ -156,15 +158,21 @@ if __name__ == "__main__":
     
     #  traits = pd.read_csv(traitfile, sep=sep)
     # parse the traits to JSON
-    trait_json = '{' #'{"traits":['
-    for trait in trait_list:
-        if trait[0] in genes:
-            # trait_json += '{"name":'+trait[0]+'","desc":"'+trait[1] +'" },'
-            trait_json += '"'+trait[0]+'":"'+trait[1]+'",'
-    trait_json = trait_json[:-1] + '}'
+#    trait_json = '{' #'{"traits":['
+#    for trait in trait_list:
+#        if trait[0] in genes:
+#            # trait_json += '{"name":'+trait[0]+'","desc":"'+trait[1] +'" },'
+#            trait_json += '"'+trait[0]+'":"'+trait[1]+'",'
+#    trait_json = trait_json[:-1] + '}'
+    final = {}
+    for el in genes:
+        final[el] = []
+    
+    for el in clean_list:
+        final[el[0]].append(el[1])
     
     with open(traitoutput, "w") as f:
-        f.write(trait_json)
+        f.write('"'+str(final)+'"')
     
             
     
