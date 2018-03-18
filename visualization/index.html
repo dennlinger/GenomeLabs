@@ -116,6 +116,7 @@ d3.json("data.json", function(error, graph) {
       .data(graph.nodes)
     .enter().append("g")
       .attr("class", "node")
+      .attr("id", function(d) {return d.name;})
       .attr("transform", function(d) { 
 		  return "translate(" + d.x + "," + d.y + ")"; })
     .call(d3.behavior.drag()
@@ -173,10 +174,19 @@ function reposition(id, indx, x, y) {
     sankey.relayout();
     svg.selectAll(".link").attr("d",path)
 }
-
-window.load = function() {
-  reposition(0, "head", 100, 50);
-}
+console.log("hii")
+window.onload = function() {
+  reposition("physical", 0, 1280, 410);
+  reposition("mental", 1, 1010, 225);
+  reposition("head", 2, 1125, 230);
+  reposition("heart", 3, 1150, 350);
+  reposition("blood", 4, 1280, 300);
+  reposition("lung", 5, 1120, 420);
+  reposition("breast", 6, 1080, 330);
+  reposition("waist", 7, 1120, 450);
+  reposition("liver", 8, 1140, 460);
+  reposition("height", 9, 1095, 600)
+};
 
 </script>
  
