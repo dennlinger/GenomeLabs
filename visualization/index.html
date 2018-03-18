@@ -62,9 +62,9 @@ var formatNumber = d3.format(",.0f"),    // zero decimal places
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    // .call(d3.behavior.zoom().on("zoom", function () {
-    //   svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
-    // }))
+    .call(d3.behavior.zoom().on("zoom", function () {
+      svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
+    }))
     .append("g")
     .attr("transform", 
           "translate(" + margin.left + "," + margin.top + ")");
@@ -89,66 +89,58 @@ var path = sankey.link();
  
 // load the data
 d3.json("data.json", function(error, graph) {
-    if (error) {
-      console.log(error)
-    }
-    var nodeMap = {};
-    graph.nodes.forEach(function(x) { nodeMap[x.name] = x; });
-    //graph.body_parts.forEach(function(x) { nodeMap[x.name] = x; });
-    // for (x in graph.nodes) {
-    //   nodeMap[x.sym] = x;
-    // }
-    graph.links = graph.links.map(function(x) {
-      return {
-        source: nodeMap[x.source],
-        target: nodeMap[x.target],
-        value: x.value
-      };
-    });
+  if (error) {
+    // do something data driven
+  }
+  var nodeMap = {};
+  graph.nodes.forEach(function(x) { nodeMap[x.name] = x; });
+
+  graph.links = graph.links.map(function(x) {
+    return {
+      source: nodeMap[x.source],
+      target: nodeMap[x.target],
+      value: x.value
+    };
+  });
  
   sankey
-      .nodes(graph.nodes)
-      .links(graph.links)
-      .layout(32);
+    .nodes(graph.nodes)
+    .links(graph.links)
+    .layout(32);
 
 
 // add in the links
-  var link = svg.append("g").selectAll(".link")
-      .data(graph.links)
-    .enter().append("path")
-      .attr("class", "link")
-      .attr("d", path)
-      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
-      .style("stroke", function(d) { 
-		  return d.color = color(d.target.name.replace(/ .*/, "")); })
-      .sort(function(a, b) { return b.dy - a.dy; });
+var link = svg.append("g").selectAll(".link")
+  .data(graph.links)
+  .enter().append("path")
+  .attr("class", "link")
+  .attr("d", path)
+  .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+  .style("stroke", function(d) { 
+  return d.color = color(d.target.name.replace(/ .*/, "")); })
+  .sort(function(a, b) { return b.dy - a.dy; });
  
 // add the link titles
   link.append("title")
-        .text(function(d) {
-      	return d.source.name + " → " + 
-                d.target.name + "\n" + format(d.value); });
+    .text(function(d) {
+    	return d.source.name + " → " + 
+        d.target.name + "\n" + format(d.value);
+    });
  
 // add in the nodes
   var node = svg.append("g").selectAll(".node")
-      .data(graph.nodes)
+    .data(graph.nodes)
     .enter().append("g")
-      .attr("class", "node")
-      .attr("id", function(d) {return d.name;})
-      .style("opacity", function(d) { if(targets.includes(d.name)) {return 0.1;} else {return 1;}})
-      .attr("transform", function(d) { 
-		  return "translate(" + d.x + "," + d.y + ")"; })
+    .attr("class", "node")
+    .attr("id", function(d) {return d.name;})
+    .style("opacity", function(d) { if(targets.includes(d.name)) {return 0.1;} else {return 1;}})
+    .attr("transform", function(d) { 
+	  return "translate(" + d.x + "," + d.y + ")"; })
     .on('mouseover', function(d) {
-      //var nodeSelection= d3.select(this).style({opacity:'0.5'});
       var linkSelection = d3.select(this)
-      //nodeSelection.select("text").style({opacity:'1.0'});
-      //console.log(d.color);
-      //colorLink(d.name, LightenDarkenColor(d.color, -40));
       colorLink(d.name, d3.rgb(d.color).darker(7));
     })
     .on('mouseout', function(d){
-      //var nodeSelection = d3.select(this).style({opacity:'1.0'});
-      //d3.select("text").style({opacity:'0.5'});
       colorLink(d.name, d.color);
     })
     .call(d3.behavior.drag()
@@ -158,29 +150,50 @@ d3.json("data.json", function(error, graph) {
  
 // add the rectangles for the nodes
   node.append("rect")
-      .attr("height", function(d) { if(targets.includes(d.name)) {return 50;} else { return d.dy;}})
-      .attr("width", function(d) {if(targets.includes(d.name)) {return 50;}
-        else {return sankey.nodeWidth();}})
-      .style("fill", function(d) { 
-		  return d.color = color(d.name.replace(/ .*/, "")); })
-      .style("stroke", function(d) { 
-		  return d3.rgb(d.color).darker(2); })
-    .append("title")
-      .text(function(d) { 
-		  return d.name + "\n" + format(d.value); });
- 
-// add in the title for the nodes
-  // node.append("text")
-  //     .attr("x", -6)
-  //     .attr("y", function(d) { return d.dy / 2; })
-  //     .attr("dy", ".35em")
-  //     .attr("text-anchor", "end")
-  //     .attr("transform", null)
-  //     .text(function(d) { return d.name; })
-  //   .filter(function(d) { return d.x < width / 2; })
-  //     .attr("x", 6 + sankey.nodeWidth())
-  //     .attr("text-anchor", "start");
- 
+    .attr("height", function(d) {
+      if(targets.includes(d.name)) {
+        return 50;
+      } else { return d.dy;}
+    })
+    .attr("width", function(d) {
+      if(targets.includes(d.name)) {
+        return 50;
+      } else {return sankey.nodeWidth();}
+    })
+    .on("click", function(d, i) { // Display relevant info
+      var div = document.getElementById("description");
+      if(div.childNodes[0]){ // remove previous info
+        div.removeChild(div.childNodes[0]);
+      }
+
+      var ul = document.createElement("ul");
+      var node = nodeMap[d.name];
+      if (node.index) {
+        var listElement = document.createElement("li");
+        listElement.innerText = node.name_1 + ": " + node.HPAclass;
+        ul.appendChild(listElement);
+      } else {
+        graph.links.map(function(x) {
+          if (x.target.name == node.name) {
+            otherNode = nodeMap[x.source.name];
+            var listElement = document.createElement("li");
+            listElement.innerText = otherNode.name_1 + ": " + otherNode.HPAclass + "\n";
+            ul.appendChild(listElement);
+          }
+        });
+      }
+      
+      div.appendChild(ul);
+      console.log("clicked");
+    })
+    .style("fill", function(d) { 
+    return d.color = color(d.name.replace(/ .*/, "")); })
+    .style("stroke", function(d) { 
+    return d3.rgb(d.color).darker(2); })
+  .append("title")
+    .text(function(d) { 
+    return d.name + "\n" + format(d.value); });
+
 // the function for moving the nodes
   function dragmove(d) {
     d3.select(this).attr("transform", 
@@ -210,7 +223,6 @@ function reposition(id, indx, x, y) {
 function colorLink(target, color){
   //iterate through all the links for src and target.
   var link = d3.selectAll(".link")[0].filter(function(d){
-    //console.log(d.__data__.target.name)
     return (d.__data__.target.name == target || d.__data__.source.name == target);
   });
   //for the filtered link make the stroke red.
@@ -265,12 +277,6 @@ function LightenDarkenColor(col, amt) {
 </script>
 </div>
 <div id="description">
-  <p> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-Why do we use it?
-It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-
- </p>
 </div>
 </div>
 </body>
