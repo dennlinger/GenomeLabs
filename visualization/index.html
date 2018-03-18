@@ -33,6 +33,8 @@
 <script src="sankey.js"></script>
 <script>
   
+var targets = ["physical", "mental", "head", "heart", "blood", "lung", "breast", "waist", "liver", "height"];
+
 var units = "connections";
  
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
@@ -116,6 +118,8 @@ d3.json("data.json", function(error, graph) {
       .data(graph.nodes)
     .enter().append("g")
       .attr("class", "node")
+      .attr("id", function(d) {return d.name;})
+      .style("opacity", function(d) { if(targets.includes(d.name)) {return 0;} else {return 1;}})
       .attr("transform", function(d) { 
 		  return "translate(" + d.x + "," + d.y + ")"; })
     .on('mouseover', function(d) {
@@ -187,6 +191,7 @@ function reposition(id, indx, x, y) {
     svg.selectAll(".link").attr("d",path)
 }
 
+<<<<<<< HEAD
 function colorLink(target, color){
   //iterate through all the links for src and target.
   var link = d3.selectAll(".link")[0].filter(function(d){
@@ -201,6 +206,20 @@ function colorLink(target, color){
 window.load = function() {
   reposition(0, "head", 100, 50);
 }
+=======
+window.onload = function() {
+  reposition("physical", 0, 1280, 440);
+  reposition("mental", 1, 1005, 255);
+  reposition("head", 2, 1125, 245);
+  reposition("heart", 3, 1150, 350);
+  reposition("blood", 4, 1280, 300);
+  reposition("lung", 5, 1120, 405);
+  reposition("breast", 6, 1080, 330);
+  reposition("waist", 7, 1120, 500);
+  reposition("liver", 8, 1140, 460);
+  reposition("height", 9, 1090, 600)
+};
+>>>>>>> 8c5016587e68024a61ffd144df44086210d900ac
 
 // unused color hack from stackoverflow
 function LightenDarkenColor(col, amt) {
