@@ -13,10 +13,10 @@ import os
 import json
     
 # parameters and data
-filename = "Chr20GWAStraits.tsv"
-infofile = "Chr20GeneData.tsv"
-gofile = "Chr20GOslimData.tsv"
-traitfile = "Chr20GWAStraits.tsv"
+filename = "../starter/Chr20GWAStraits.tsv"
+infofile = "../starter/Chr20GeneData.tsv"
+gofile = "../starter/Chr20GOslimData.tsv"
+traitfile = "../starter/Chr20GWAStraits.tsv"
 
 output = "edges.json"
 geneoutput = "geneinfo.json"
