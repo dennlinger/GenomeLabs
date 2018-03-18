@@ -17,11 +17,11 @@
 .link {
   fill: none;
   stroke: #000;
-  stroke-opacity: .2;
+  stroke-opacity: 0.3;
 }
  
 .link:hover {
-  stroke-opacity: .5;
+  stroke-opacity: .9;
 }
  
 </style>
@@ -118,6 +118,19 @@ d3.json("data.json", function(error, graph) {
       .attr("class", "node")
       .attr("transform", function(d) { 
 		  return "translate(" + d.x + "," + d.y + ")"; })
+    .on('mouseover', function(d) {
+      var nodeSelection= d3.select(this).style({opacity:'0.5'});
+      var linkSelection = d3.select(this)
+      nodeSelection.select("text").style({opacity:'1.0'});
+      //console.log(d.color);
+      //colorLink(d.name, LightenDarkenColor(d.color, -40));
+      colorLink(d.name, d3.rgb(d.color).darker(7));
+    })
+    .on('mouseout', function(d){
+      var nodeSelection = d3.select(this).style({opacity:'1.0'});
+      d3.select("text").style({opacity:'0.5'});
+      colorLink(d.name, d.color);
+    })
     .call(d3.behavior.drag()
       .origin(function(d) { return d; })
       .on("dragstart", function() { 
@@ -174,8 +187,45 @@ function reposition(id, indx, x, y) {
     svg.selectAll(".link").attr("d",path)
 }
 
+function colorLink(target, color){
+  //iterate through all the links for src and target.
+  var link = d3.selectAll(".link")[0].filter(function(d){
+    //console.log(d.__data__.target.name)
+    return (d.__data__.target.name == target || d.__data__.source.name == target);
+  });
+  //for the filtered link make the stroke red.
+  d3.selectAll(link).style("stroke",color);
+}
+
+
 window.load = function() {
   reposition(0, "head", 100, 50);
+}
+
+// unused color hack from stackoverflow
+function LightenDarkenColor(col, amt) {
+    var usePound = false;
+  
+    if (col[0] == "#") {
+        col = col.slice(1);
+        usePound = true;
+    }
+    var num = parseInt(col,16);
+    var r = (num >> 16) + amt;
+    if (r > 255) r = 255;
+    else if  (r < 0) r = 0;
+ 
+    var b = ((num >> 8) & 0x00FF) + amt;
+ 
+    if (b > 255) b = 255;
+    else if  (b < 0) b = 0;
+ 
+    var g = (num & 0x0000FF) + amt;
+ 
+    if (g > 255) g = 255;
+    else if (g < 0) g = 0;
+ 
+    return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
 }
 
 </script>
