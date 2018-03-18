@@ -121,8 +121,7 @@ d3.json("data.json", function(error, graph) {
     .call(d3.behavior.drag()
       .origin(function(d) { return d; })
       .on("dragstart", function() { 
-		  this.parentNode.appendChild(this); })
-      .on("drag", dragmove));
+		  this.parentNode.appendChild(this); }));
  
 // add the rectangles for the nodes
   node.append("rect")
@@ -160,7 +159,25 @@ d3.json("data.json", function(error, graph) {
     link.attr("d", path);
   }
 });
- 
+
+function reposition(id, indx, x, y) {
+  var head = document.getElementById(id);
+  var d = sankey.nodes()[indx]
+  console.log(head)
+  d3.select(head).attr("transform", 
+        "translate(" + (
+             d.x = x
+          ) + "," + (
+               d.y = y
+            ) + ")");
+    sankey.relayout();
+    svg.selectAll(".link").attr("d",path)
+}
+
+window.load = function() {
+  reposition(0, "head", 100, 50);
+}
+
 </script>
  
 </body>
