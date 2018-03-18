@@ -16,10 +16,12 @@ import json
 filename = "Chr20GWAStraits.tsv"
 infofile = "Chr20GeneData.tsv"
 gofile = "Chr20GOslimData.tsv"
+traitfile = "Chr20GWAStraits.tsv"
 
 output = "edges.json"
 geneoutput = "geneinfo.json"
 reducedoutput = "Chr20Reduced.tsv"
+traitoutput = "traits.json"
 sep = "\t"
 
 # manually defined dictionary of classification mappings
@@ -69,7 +71,8 @@ class_dict = {"asthma":"physical",
               }
 
 def output_json(mapping,score):
-    """ Creates a JSON outut file"""
+    """ Creates a JSON outut file for 
+    """
     
     # combine to list, so we can put it to JSON
     temp_list = []
@@ -126,6 +129,7 @@ if __name__ == "__main__":
     info = pd.read_csv(infofile, sep=sep)
     go = pd.read_csv(gofile, sep=sep)
 
+
     # create list of genes that appear:
     genes = set()
     for el in mapping:
@@ -149,5 +153,18 @@ if __name__ == "__main__":
 #    info.to_json(geneoutput, orient="index")
     # tsv for the horizontal svg
     info.to_csv(reducedoutput, sep=sep, index=False)
+    
+    #  traits = pd.read_csv(traitfile, sep=sep)
+    # parse the traits to JSON
+    trait_json = '{"traits":['
+    for trait in trait_list:
+        if trait[0] in genes:
+            trait_json += '{"name":'+trait[0]+'","desc":"'+trait[1] +'" },'
+    trait_json = trait_json[:-1] + ']}'
+    
+    with open(traitoutput, "w") as f:
+        f.write(trait_json)
+    
+            
     
     
