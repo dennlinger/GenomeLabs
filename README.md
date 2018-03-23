@@ -5,6 +5,13 @@ This was the winning entry of the BCB BioHacks 2018 hackathon, hosted at the Uni
 
 We developed a simple visualization of matchings of GWAS traits of genes represented in Chromosome 20, and linked them to specific parts of the body.
 
+## Requirements
+For the finished projects, no further requirements are necessary. Note that we currently seem to have a compatibility issue with Google Chrome; the file index.html should work out of the box for Mozilla Firefox.
+
+The preprocessing was done with the following setup:
+* (Anaconda) Python 3.6
+* NumPy, Pandas, json packages
+
 ## Implementation
 The main implementation is the visualization, which is delivered in a D3 sankey environment. The preprocessing of the data was done in Python, based on the provided files.
 
