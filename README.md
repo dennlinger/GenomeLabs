@@ -18,7 +18,7 @@ We then manually parsed the relevant information into JSON.
 That includes the edges, which we generated, as well as the gene information available form the Chr20GeneData.tsv file. Due to time constraints, we were not able to include the relevant GWAS data, which would have been a nice addition, to highlight where we found that information.
 
 ## Implementation
-The JS-based implementation builds upon JQuery, and D3 - specifically sankey graphs. We built the basis on top of a tutorial we found online (TODO: insert link).
+The JS-based implementation builds upon JQuery, and D3 - specifically sankey graphs. We built the basis on top of a tutorial we found online [http://bl.ocks.org/d3noob/5028304].
 
 
 ## Problems encountered
